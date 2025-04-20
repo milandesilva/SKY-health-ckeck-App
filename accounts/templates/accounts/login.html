@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Health Check</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <!-- Logo -->
+    <img src="{% static 'images/skylogo.png' %}" alt="Logo" class="logo">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="/register/">Register</a></li>
+            <li><a href="/dashboard/">Dashboard</a></li>
+            <li><a href="/healthcheck/">Health Check</a></li>
+            <li><a href="/teamsummary/">Team Summary</a></li>
+            <li><a href="/departmentsummary/">Department Summary</a></li>
+            <li><a href="/accounts/logout/">Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- Login Form -->
+    <form method="POST" class="login-form">
+        <h2>Login</h2>
+        {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error-message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+
+        <!-- Sign up link -->
+        <p class="signup-link">
+            Don't have an account? <a href="/register/">Sign up here</a>
+        </p>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <hr>
+        <p>&copy; 2025 Health Check - Sky Engineering | University of Westminster</p>
+    </footer>
+
+</body>
+</html>
+
