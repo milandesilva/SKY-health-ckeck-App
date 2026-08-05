@@ -1,0 +1,95 @@
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logo styling */
+.logo {
+    display: block;
+    margin: 2rem auto 1rem;
+    width: 160px;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #002D72;
+    padding: 1rem 2rem;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.nav-list li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.nav-list li a:hover {
+    background-color: #00142e;
+}
+
+/* Dashboard Content Box */
+.container {
+    background-color: white;
+    padding: 2rem;
+    max-width: 800px;
+    width: 90%;
+    margin: 3rem auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Text box with padding and spacing */
+.dashboard-text-box {
+    background-color: #ffffff;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.dashboard-text-box h2 {
+    font-size: 1.8rem;
+    color: #002D72;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-text-box p {
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #002D72;
+    color: white;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+.footer hr {
+    border: none;
+    height: 1px;
+    background-color: #ffffff44;
+    margin: 0 auto 1rem;
+    width: 80%;
+}

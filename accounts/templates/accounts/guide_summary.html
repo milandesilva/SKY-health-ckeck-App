@@ -1,0 +1,134 @@
+<!-- Mykola code here -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Summary Guide | Health Check</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <style>
+        /* Styles for the summary guide page */
+        body { background: #e2f0fb; margin:0; font-family: 'Segoe UI',Arial,sans-serif; }
+        .guide-main { max-width: 1050px; margin: 54px auto 70px auto; background: #fff; border-radius: 28px; box-shadow: 0 8px 32px #263c5922; padding: 52px 48px 46px 48px;}
+        .guide-title { text-align:center; font-size:2.4em; color:#1465a2; font-weight:700; margin-bottom:34px;}
+        .guide-section { margin-bottom:38px; }
+        .guide-section-title { font-size:1.28em; color:#2774ba; font-weight:bold; margin-bottom:13px;}
+        .guide-text { color:#34425b; font-size:1.15em; line-height:1.68;}
+        .guide-tip { background:#e2f0fb; border-left:4px solid #1a76d2; border-radius:8px; padding:13px 22px; margin:14px 0; color:#1a4a79;}
+        .guide-btn-row {display:flex;justify-content:flex-end;margin-bottom:12px;}
+        .summary-btn, .guide-btn {
+            background:linear-gradient(90deg,#1a76d2 70%,#2186eb 100%);
+            color:#fff; border:none; border-radius:11px; padding:12px 26px;
+            font-size:1.17em; font-weight:600;
+            box-shadow:0 2px 12px #c7e2fa40;
+            transition:background 0.14s, color 0.14s;
+            min-width:110px; text-align:center; cursor:pointer;
+            outline: none; text-decoration: none; display:inline-block;
+        }
+        .summary-btn:hover, .guide-btn:hover { background: #289ff3; color:#fff; }
+        .guide-table {border-collapse:collapse;width:100%;margin:20px 0;}
+        .guide-table th, .guide-table td {border:1.5px solid #bad2ec;padding:10px 15px;font-size:1.07em;}
+        .guide-table th {background:#f4fafd;font-weight:600;color:#1465a2;}
+        .guide-label {font-weight:bold;}
+        @media (max-width: 1100px) {.guide-main{padding:18px 2vw 18px 2vw;}}
+        @media (max-width: 700px) {.guide-main{padding:6px 2vw 6px 2vw;}}
+    </style>
+</head>
+<body>
+    <body>
+        <!-- Navigation button back to Summary panel -->
+        <div class="guide-main">
+            <div class="guide-btn-row">
+                <a href="{% url 'summary' %}" class="guide-btn">&#8592; Back to Summary</a>
+            </div>
+<!-- Main Title -->
+    <div class="guide-main">
+        <div class="guide-title">Summary Panel Guide</div>
+         <!-- What is the summary panel -->
+        <div class="guide-section">
+            <div class="guide-section-title">What is the Summary Panel?</div>
+            <div class="guide-text">
+                The Summary Panel allows you to view statistics about health check votes across your department, team, or the whole organization. You can see vote distributions, trends, and analyze performance in a simple, visual way.<br><br>
+                <span class="guide-label">Anyone can use this page!</span> It's designed to help you make better decisions based on real team feedback.
+            </div>
+        </div>
+        <!-- How to use the summary panel -->
+        <div class="guide-section">
+            <div class="guide-section-title">How to Use the Summary Panel</div>
+            <div class="guide-text">
+                <ol>
+                    <li><b>Choose Filters:</b> Use the dropdown menus at the top to select Department, Team, Session, Card, or a specific time period.</li>
+                    <li><b>View the Results:</b> The panel updates automatically to show statistics for your selected criteria.</li>
+                    <li><b>Understand the Charts:</b> Bar charts and tables help you quickly see how many people voted Green, Amber, or Red, and how trends are changing over time.</li>
+                </ol>
+            </div>
+            <div class="guide-tip">
+                <b>Tip:</b> You can see more or less detail by adjusting the dropdowns – try "All Departments" or drill down to just your own team.
+            </div>
+        </div>
+        <!-- Explanation of each filter -->
+        <div class="guide-section">
+            <div class="guide-section-title">What Do the Filters Do?</div>
+            <table class="guide-table">
+                <tr><th>Filter</th><th>What it changes</th></tr>
+                <tr><td><b>Department</b></td><td>See stats for a specific department or all departments (if you have access).</td></tr>
+                <tr><td><b>Team</b></td><td>See stats for one team or all teams within a department.</td></tr>
+                <tr><td><b>Session</b></td><td>Analyze one particular health check session, or view all sessions together.</td></tr>
+                <tr><td><b>Card</b></td><td>Filter results for a single health card, or all cards.</td></tr>
+                <tr><td><b>Time Period</b></td><td>Choose a date range to analyze votes from just that timeframe.</td></tr>
+            </table>
+        </div>
+        <!-- How to interpret voting statistics -->
+        <div class="guide-section">
+            <div class="guide-section-title">Understanding the Voting Statistics</div>
+            <div class="guide-text">
+                The main chart and table show how many people voted:
+                <ul>
+                    <li><span style="color:#18b86d;font-weight:bold;">Green:</span> Everything is good.</li>
+                    <li><span style="color:#ffc400;font-weight:bold;">Amber:</span> There are some issues or risks.</li>
+                    <li><span style="color:#e14242;font-weight:bold;">Red:</span> There are serious problems or concerns.</li>
+                </ul>
+                <b>Total Votes</b> at the bottom tells you how many responses were included in your stats.
+            </div>
+        </div>
+        <!-- How to interpret trend statistics -->
+        <div class="guide-section">
+            <div class="guide-section-title">Understanding Trends</div>
+            <div class="guide-text">
+                Each vote also includes a <b>trend</b> showing if the situation is:
+                <ul>
+                    <li><span style="color:#18b86d;"><b>Improving</b>:</span> Things are getting better compared to last time.</li>
+                    <li><span style="color:#ffc400;"><b>About the Same</b>:</span> No big changes since last time.</li>
+                    <li><span style="color:#e14242;"><b>Getting Worse</b>:</span> Things have declined since last time.</li>
+                </ul>
+                The <b>Trend Statistics</b> chart and table show how many users picked each trend.<br>
+                <b>Overall Trend</b> is based on the most selected trend type.
+            </div>
+        </div>
+        <!-- Example scenario for users -->
+        <div class="guide-section">
+            <div class="guide-section-title">Example Scenario</div>
+            <div class="guide-text">
+                <b>Example:</b>  
+                If you select your team and last month's date range, you might see:<br>
+                <ul>
+                    <li><b>10 Green</b>, <b>4 Amber</b>, <b>1 Red</b> votes</li>
+                    <li>Trends: <b>8 Improving</b>, <b>5 About the Same</b>, <b>2 Getting Worse</b></li>
+                </ul>
+                <b>Interpretation:</b><br>
+                Most team members think things are going well, and the majority feel that things are getting better!
+            </div>
+        </div>
+        <!-- Tips and best practices for using the panel -->
+        <div class="guide-section">
+            <div class="guide-section-title">Tips & Best Practices</div>
+            <ul class="guide-text">
+                <li><b>Check different filters</b> to see if some teams or cards have more concerns than others.</li>
+                <li><b>Use the date filter</b> to see if things are getting better or worse over time.</li>
+                <li><b>Look for patterns</b> – if “Red” or “Getting Worse” increases, it might be time to take action.</li>
+                <li>If you are unsure, ask for help understanding the results!</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+<!-- Mykola code here -->

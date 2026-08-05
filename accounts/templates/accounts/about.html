@@ -1,0 +1,154 @@
+<!-- Milan code here -->
+ <!--  
+    ABOUT PAGE 
+    - This page explains the Health Check app's mission, goals, future, and inspiration.
+    - Uses a professional card layout with responsive CSS for all devices. -->
+
+
+{% extends 'accounts/base.html' %}
+{% block title %}About | Health Check{% endblock %}
+
+{% block extra_style %}
+<style>
+/* Main Layout Container */
+.about-main-container {
+    max-width: 820px;
+    margin: 60px auto 90px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+    align-items: center;
+    margin-bottom: 150px !important;  /* EXTRA SPACE AT THE BOTTOM */
+}
+/* Header Card Styling */
+.about-title-card {
+    width: 100%;
+    background: linear-gradient(90deg, #e3f2fd 70%, #dbeafe 100%);
+    border-radius: 22px;
+    box-shadow: 0 3px 18px #2774ba0d;
+    padding: 34px 40px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.about-title {
+    font-size: 2.4em;
+    color: #1976d2;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 7px;
+    text-align: center;
+}
+.about-tagline {
+    color: #145fa3;
+    font-size: 1.19em;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 8px;
+}
+/* Section Card Styling */
+.about-section-card {
+    width: 100%;
+    background: #f7fbff;
+    border-radius: 18px;
+    box-shadow: 0 2px 10px #b8eafd16;
+    padding: 32px 38px 22px 38px;
+    color: #223145;
+    font-size: 1.13em;
+    line-height: 1.74;
+    margin-bottom: 0;
+}
+.about-section-title {
+    color: #1976d2;
+    font-size: 1.15em;
+    font-weight: bold;
+    margin-bottom: 13px;
+    letter-spacing: 0.2px;
+}
+.about-section-list {
+    margin: 0 0 0 24px;
+    padding: 0;
+    list-style-type: disc;
+    color: #215581;
+    font-size: 1.07em;
+    line-height: 1.62;
+}
+/* Inspiration Card Styling */
+.about-inspiration-card {
+    width: 100%;
+    background: #eaf4fc;
+    border-radius: 16px;
+    border-left: 6px solid #1a76d2;
+    padding: 19px 32px;
+    color: #175387;
+    font-size: 1.14em;
+    font-weight: 500;
+    box-shadow: 0 2px 10px #b1e4fd0c;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 90px;  /* PUSHES IT ABOVE THE FOOTER */
+}
+/* Responsive (Mobile) Styling */
+@media (max-width: 850px) {
+    .about-main-container { max-width: 99vw; gap: 19px; margin-bottom: 120px !important; }
+    .about-title-card, .about-section-card, .about-inspiration-card { padding: 18px 5vw; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-main-container">
+    <!-- Title & Tagline Card -->
+    <div class="about-title-card">
+        <div class="about-title">About Health Check <span aria-label="magnifying glass" title="magnifying glass">🔍</span></div>
+        <div class="about-tagline">
+            Promoting healthy, happy, and high-performing teams—one check-in at a time. <span aria-label="sparkles">✨</span>
+        </div>
+    </div>
+    <!-- Our Purpose Section -->
+    <div class="about-section-card">
+        <div class="about-section-title">Our Purpose <span aria-label="target">🎯</span></div>
+        <div>
+            Health Check was created to empower teams and organizations to prioritize wellbeing, transparency, and continuous improvement.<br>
+            By making regular team health check-ins part of the workplace culture, we help you quickly spot challenges, celebrate wins, and create a more open, supportive environment.
+        </div>
+    </div>
+    <!-- Goals & Features List -->
+    <div class="about-section-card">
+        <div class="about-section-title">Goals &amp; Features <span aria-label="star">🌟</span></div>
+        <ul class="about-section-list">
+            <li>Encourage open and honest communication about team wellbeing <span aria-label="speaking head">🗣️</span>.</li>
+            <li>Spot trends in morale, engagement, and productivity before issues escalate <span aria-label="chart">📈</span>.</li>
+            <li>Empower every team member to share their voice—anonymously and safely <span aria-label="shield">🛡️</span>.</li>
+            <li>Give leaders and team members the tools to track progress and celebrate improvements <span aria-label="trophy">🏆</span>.</li>
+            <li>Provide easy-to-understand statistics and visualizations to guide conversations and decisions <span aria-label="bar chart">📊</span>.</li>
+            <li>Build a happier, more resilient workplace for everyone <span aria-label="smile">😊</span>.</li>
+        </ul>
+    </div>
+    <!-- Future Plans Section -->
+    <div class="about-section-card">
+        <div class="about-section-title">The Future of Health Check <span aria-label="rocket">🚀</span></div>
+        <div>
+            We’re always evolving! In the future, Health Check aims to offer:
+            <ul class="about-section-list">
+                <li>Personalized insights and tips for team wellbeing <span aria-label="bulb">💡</span>.</li>
+                <li>Integration with more HR and productivity platforms <span aria-label="gear">⚙️</span>.</li>
+                <li>Automated reminders for check-ins and follow-ups <span aria-label="bell">🔔</span>.</li>
+                <li>More advanced analytics to help leaders take action sooner <span aria-label="chart">📊</span>.</li>
+                <li>Community-driven best practices to inspire a global culture of wellbeing <span aria-label="globe">🌍</span>.</li>
+            </ul>
+            <br>
+            We believe a healthy team is the foundation of every great project, company, and community.
+        </div>
+    </div>
+    <!-- Inspiration Car -->
+    <div class="about-inspiration-card">
+        <b>Inspiring a Healthier Workplace <span aria-label="heart">❤️</span></b><br>
+        Health Check hopes to inspire organizations everywhere to put people first.<br>
+        We encourage you to share your experience and spread a culture of care.<br>
+        When wellbeing is the priority, everyone wins—now and for the future. <span aria-label="handshake">🤝</span>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Milan code here -->

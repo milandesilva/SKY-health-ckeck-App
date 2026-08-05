@@ -1,0 +1,16 @@
+.git
+.venv
+__pycache__
+*.pyc
+*.pyo
+.DS_Store
+*.md
+staticfiles
+softdevdatabase.db
+db.sqlite3
+.env
+.idea
+.vscode
+agent-tools
+**/__pycache__
+**/*.pyc

@@ -1,0 +1,8 @@
+asgiref==3.11.1
+Django==6.0.6
+django-smart-selects==1.7.2
+sqlparse==0.5.5
+gunicorn==23.0.0
+whitenoise==6.9.0
+dj-database-url==2.3.0
+# Postgres driver is installed in Docker (Python 3.12). Local SQLite needs no driver.

@@ -1,0 +1,188 @@
+<!-- # Gabriel code below 🔵🔵🔵🔵🔵 -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Health Check Voting</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body { background: #a7cae8; font-family: 'Segoe UI', Arial, sans-serif; }
+        .wizard-main {
+            max-width: 730px; margin: 60px auto 0 auto; padding: 40px;
+            background: #e2f0fb; border-radius: 18px;
+            box-shadow: 0 6px 32px rgba(38,60,89,0.08);
+            display: flex; flex-direction: row; align-items: flex-start; gap: 32px; position: relative;
+        }
+        .traffic-light {
+            width: 130px; min-height: 300px; background: #272b32;
+            border-radius: 40px; box-shadow: 0 0 9px #0003;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-evenly;
+            margin-right: 24px; padding: 16px 0;
+        }
+        .vote-hint {
+            color: #cfd8e3; font-size: 0.78em; text-align: center;
+            padding: 0 10px; line-height: 1.3;
+        }
+        .light-option {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+        }
+        /* Keep radios in the form (display:none can break clicks/submit in some browsers) */
+        .traffic-light input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            margin: 0;
+            pointer-events: none;
+        }
+        .light-label {
+            width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border-radius: 50%;
+            border: 3px solid #1a1f26;
+            background: #3a424d !important; /* dim until selected */
+            opacity: 1;
+            transition: 0.2s all;
+            box-shadow: inset 0 0 12px #0006;
+        }
+        .light-label:hover { transform: scale(1.05); }
+        .light-caption {
+            color: #9aa4b2; font-size: 0.72em; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        #vote_input_red:checked + .light-label.red {
+            background: #ff2424 !important;
+            border: 4px solid #fff;
+            box-shadow: 0 0 22px #ff2424aa;
+        }
+        #vote_input_amber:checked + .light-label.amber {
+            background: #ffd700 !important;
+            border: 4px solid #fff;
+            box-shadow: 0 0 22px #ffd700aa;
+        }
+        #vote_input_green:checked + .light-label.green {
+            background: #00e165 !important;
+            border: 4px solid #fff;
+            box-shadow: 0 0 22px #00e165aa;
+        }
+        #vote_input_red:checked ~ .light-caption-red,
+        #vote_input_amber:checked ~ .light-caption-amber,
+        #vote_input_green:checked ~ .light-caption-green {
+            color: #fff;
+        }
+
+        .vote-form-section { flex: 1; display: flex; flex-direction: column; gap: 18px; }
+        .vote-progress { color: #1465a2; font-weight: 600; margin-bottom: 4px; }
+        .vote-title { font-size: 2em; font-weight: 600; color: #1465a2; }
+        .vote-desc { font-size: 1.11em; color: #3a4053; }
+        .selected-vote {
+            font-size: 0.98em; color: #1465a2; font-weight: 600;
+            min-height: 1.2em;
+        }
+        .error-message {
+            color: #c80000; background: #ffeaea; border: 1px solid #ff7b7b;
+            border-radius: 8px; padding: 8px 15px; margin: 14px 0 8px 0;
+            text-align: center; font-size: 1.05em;
+        }
+        select, textarea { font-size: 1.07em; width: 100%; border-radius: 8px; border: 1.5px solid #bad2ec; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+        textarea { min-height: 48px; }
+        .trend-group, .comment-group { margin-top: 10px; }
+        .wizard-nav-btns { display: flex; gap: 12px; margin-top: 28px; }
+        .btn-main, .save-exit-btn {
+            padding: 10px 24px; border: none; border-radius: 8px; font-size: 1.08em; font-weight: 500;
+            background: #1465a2; color: #fff; box-shadow: 0 1px 4px #0001; transition: background 0.19s, box-shadow 0.19s;
+            margin-right: 6px; cursor: pointer;
+        }
+        .btn-main:disabled, .save-exit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .save-exit-btn { position: absolute; left: 24px; top: 18px; border: 2px solid #1465a2; z-index: 2; }
+        @media (max-width: 880px) {
+            .wizard-main { flex-direction: column; gap: 18px; }
+            .traffic-light { margin: 0 auto; }
+            .save-exit-btn { left: 18px; }
+        }
+        .btn-main:hover, .save-exit-btn:hover {
+            background: #289ff3;
+            color: #fff;
+            box-shadow: 0 4px 20px #1465a265;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" style="margin:0;" id="vote-form">
+        {% csrf_token %}
+        <button type="submit" name="save_exit" value="1" class="save-exit-btn btn-main" formnovalidate>Save and Exit</button>
+        <div class="wizard-main">
+            <div class="traffic-light" role="radiogroup" aria-label="Vote color">
+                <div class="vote-hint">Click a light<br>to vote</div>
+
+                <div class="light-option">
+                    <input type="radio" class="radio-red" name="vote" value="red" id="vote_input_red" {% if vote_value == "red" %}checked{% endif %}>
+                    <label class="light-label red" for="vote_input_red" title="Red"></label>
+                    <span class="light-caption light-caption-red">Red</span>
+                </div>
+                <div class="light-option">
+                    <input type="radio" class="radio-amber" name="vote" value="amber" id="vote_input_amber" {% if vote_value == "amber" %}checked{% endif %}>
+                    <label class="light-label amber" for="vote_input_amber" title="Amber"></label>
+                    <span class="light-caption light-caption-amber">Amber</span>
+                </div>
+                <div class="light-option">
+                    <input type="radio" class="radio-green" name="vote" value="green" id="vote_input_green" {% if vote_value == "green" %}checked{% endif %}>
+                    <label class="light-label green" for="vote_input_green" title="Green"></label>
+                    <span class="light-caption light-caption-green">Green</span>
+                </div>
+            </div>
+            <div class="vote-form-section">
+                <div class="vote-progress">{{ progress_label|default:"Card" }}</div>
+                <div class="vote-title">{{ card.title|default:"Voting Card" }}</div>
+                <div class="vote-desc">{{ card.description|default:"No description." }}</div>
+                <div class="selected-vote" id="selected-vote-label">
+                    {% if vote_value %}Selected vote: {{ vote_value|title }}{% else %}No vote selected yet{% endif %}
+                </div>
+                {% if error_message %}
+                    <div class="error-message">{{ error_message }}</div>
+                {% endif %}
+                <div class="trend-group">
+                    <label for="trend"><b>Trend:</b></label>
+                    <select name="trend" id="trend">
+                        <option value="">Select trend...</option>
+                        <option value="improving" {% if trend_value == "improving" %}selected{% endif %}>Improving</option>
+                        <option value="steady" {% if trend_value == "steady" %}selected{% endif %}>About the same</option>
+                        <option value="worsening" {% if trend_value == "worsening" %}selected{% endif %}>Getting worse</option>
+                    </select>
+                </div>
+                <div class="comment-group">
+                    <label for="comment"><b>Add a comment below (optional):</b></label>
+                    <textarea name="comment" id="comment">{{ comment_value }}</textarea>
+                </div>
+                <div class="wizard-nav-btns">
+                    {% if not is_first %}
+                        <button name="previous" value="1" class="btn-main" type="submit" formnovalidate>Previous</button>
+                    {% endif %}
+                    {% if not is_last %}
+                        <button name="next" value="1" class="btn-main" type="submit">Next</button>
+                    {% endif %}
+                    {% if is_last %}
+                        <button name="submit" value="1" class="btn-main" type="submit">Submit All Votes</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+        (function () {
+            var labels = { red: 'Red', amber: 'Amber', green: 'Green' };
+            var status = document.getElementById('selected-vote-label');
+            document.querySelectorAll('input[name="vote"]').forEach(function (input) {
+                input.addEventListener('change', function () {
+                    if (status) {
+                        status.textContent = 'Selected vote: ' + (labels[input.value] || input.value);
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
+
+<!-- # Gabriel code ends here 🔵🔵🔵🔵🔵 -->

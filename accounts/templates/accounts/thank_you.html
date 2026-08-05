@@ -1,0 +1,63 @@
+<!-- # Gabriel code below 🔵🔵🔵🔵🔵 -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thank You!</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body { background: #a7cae8; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; }
+        .thank-container {
+            max-width: 500px; margin: 100px auto 0 auto; background: #e2f0fb;
+            border-radius: 20px; padding: 48px 40px 36px 40px;
+            box-shadow: 0 8px 32px rgba(38,60,89,0.09);
+            text-align: center;
+        }
+        .thank-title {
+            font-size: 2.3em;
+            color: #1465a2;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .thank-message {
+            font-size: 1.17em;
+            color: #345;
+            margin-bottom: 38px;
+        }
+        .thank-icon {
+            font-size: 60px;
+            margin-bottom: 16px;
+            color: #00bc77;
+        }
+        .btn-main {
+            padding: 12px 34px; border: none; border-radius: 8px;
+            font-size: 1.14em; font-weight: 500;
+            background: #1465a2; color: #fff;
+            box-shadow: 0 1px 4px #0001; transition: background 0.19s, box-shadow 0.19s;
+            cursor: pointer; margin-top: 10px;
+            text-decoration: none; /* For link styling */
+            display: inline-block;
+        }
+        .btn-main:hover {
+            background: #289ff3;
+            color: #fff;
+            box-shadow: 0 4px 20px #1465a265;
+        }
+    </style>
+</head>
+<body>
+    <div class="thank-container">
+        <div class="thank-icon">🎉</div>
+        <div class="thank-title">Thank You!</div>
+        <div class="thank-message">
+            Your Health Check responses have been submitted.<br>
+            We appreciate your feedback!
+        </div>
+        <a href="{% url 'healthcheck_landing' %}" class="btn-main">Return to Health Check Home</a>
+    </div>
+</body>
+</html>
+
+<!-- # Gabriel code ends here 🔵🔵🔵🔵🔵 -->

@@ -1,0 +1,314 @@
+<!-- Ridhwan code here -->
+{% extends 'accounts/base.html' %}
+<!-- Set the page title and inject page-specific CSS styles for the summary/statistics layout -->
+{% block title %}Team Summary | Health Check{% endblock %}
+
+<!-- CSS for stats containers, cards, tables, and responsive design -->
+{% block extra_style %}
+<style>
+.stats-main-container {
+    max-width: 980px;
+    margin: 0 auto 36px auto;
+    padding: 0 16px;
+}
+.stats-filter-form {
+    width: 100%;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 14px #2850860f;
+    padding: 24px 28px 18px 28px;
+    margin-bottom: 38px;
+}
+.stats-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px 18px;
+    align-items: center;
+    justify-content: center;
+}
+.stats-filter-form select, .stats-filter-form input[type="text"] {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 1.08em;
+    border: 1.3px solid #b9d7f5;
+    background: #f8fbff;
+    min-width: 135px;
+}
+.stats-filter-form input[type="text"] {
+    min-width: 175px;
+}
+.stats-filter-form button {
+    padding: 9px 32px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #1976d2 80%, #4fc3f7 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.08em;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+.stats-filter-form button:hover {
+    background: #42a5f5;
+}
+.stats-cards-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 38px;
+    justify-content: center;
+    margin: 0;
+}
+.stats-card {
+    background: #f6fbff;
+    border-radius: 19px;
+    box-shadow: 0 4px 32px #28508616;
+    max-width: 430px;
+    flex: 1 1 390px;
+    padding: 30px 24px 24px 24px;
+    margin-bottom: 20px;
+    min-width: 330px;
+}
+.stats-title {
+    font-size: 1.28em;
+    font-weight: 700;
+    color: #1976d2;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+.stats-table {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #eaf4fc;
+    margin-bottom: 12px;
+    font-size: 1.09em;
+}
+.stats-table th, .stats-table td {
+    padding: 8px 10px;
+    text-align: left;
+}
+.stats-table th {
+    color: #1676d2;
+    background: #eaf4fc;
+    font-weight: 600;
+}
+.stats-vote-amber { color: #ffb300; font-weight: 700; }
+.stats-vote-green { color: #43a047; font-weight: 700; }
+.stats-vote-red { color: #e53935; font-weight: 700; }
+.stats-vote-total { color: #1976d2; font-weight: 700;}
+.stats-bar-wrap { margin-top: 8px; }
+.stats-overall-trend { margin: 7px 0 7px 0; font-weight: 700;}
+.stats-trend-improving { color: #43a047; font-weight: 700; }
+.stats-trend-same { color: #ffb300; font-weight: 700; }
+.stats-trend-worse { color: #e53935; font-weight: 700; }
+.stats-overall-improving { color: #43a047; }
+.stats-overall-same { color: #ffb300;}
+.stats-overall-worse { color: #e53935;}
+@media (max-width: 1050px) {
+    .stats-main-container { max-width: 99vw;}
+    .stats-cards-wrap { flex-direction: column; align-items: center; gap: 20px;}
+    .stats-card { min-width: unset; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="stats-main-container">
+<!-- Filter form to select card and time period; filters what stats are shown  -->
+    <form method="post" autocomplete="off" class="stats-filter-form">
+        {% csrf_token %}
+        <div class="stats-filter-row">
+            <div>
+                <select name="card">
+                    <option value="all" {% if not selected_card or selected_card == "all" %}selected{% endif %}>All Cards</option>
+                    {% for card in cards %}
+                        <option value="{{ card.id }}" {% if selected_card == card.id|stringformat:"s" %}selected{% endif %}>{{ card.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <input type="text" name="time_period" id="time_period"
+                    placeholder="e.g., 01/01/2024-31/12/2024" readonly
+                    value="{{ time_period|default:'' }}">
+            </div>
+            <button type="submit">View</button>
+        </div>
+    </form>
+
+    <div class="stats-cards-wrap">
+        <!-- Team Voting Statistics card: shows color vote counts (Amber, Green, Red) and bar chart -->
+        <div class="stats-card">
+            <div class="stats-title">Team Voting Statistics</div>
+            <table class="stats-table">
+                <tr>
+                    <td class="stats-vote-amber">Amber</td>
+                    <td>{{ team_vote_counts.amber|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-vote-green">Green</td>
+                    <td>{{ team_vote_counts.green|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-vote-red">Red</td>
+                    <td>{{ team_vote_counts.red|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-vote-total">Total Votes</td>
+                    <td class="stats-vote-total">{{ team_total_votes|add:"0" }}</td>
+                </tr>
+            </table>
+            <div class="stats-bar-wrap">
+                <canvas id="teamBarChart" width="320" height="140"></canvas>
+            </div>
+        </div>
+        <!-- Team Trend Statistics card: shows trend counts (Improving, Steady, Worse) and summary -->
+        <div class="stats-card">
+            <div class="stats-title">Team Trend Statistics</div>
+            <table class="stats-table">
+                <tr>
+                    <td class="stats-trend-improving">Improving</td>
+                    <td>{{ team_trend_counts.improving|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-trend-same">About the Same</td>
+                    <td>{{ team_trend_counts.steady|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-trend-worse">Getting Worse</td>
+                    <td>{{ team_trend_counts.worsening|add:"0" }}</td>
+                </tr>
+            </table>
+            <div class="stats-overall-trend">
+                Overall Trend:
+                {% if final_team_trend == "improving" %}
+                    <span class="stats-overall-improving">Improving</span>
+                {% elif final_team_trend == "steady" %}
+                    <span class="stats-overall-same">About the Same</span>
+                {% elif final_team_trend == "worsening" %}
+                    <span class="stats-overall-worse">Getting Worse</span>
+                {% else %}
+                    <span class="stats-overall-same">About the Same</span>
+                {% endif %}
+            </div>
+        </div>
+        <!-- User Voting Statistics card: shows user's color vote counts and bar chart -->
+        <div class="stats-card">
+            <div class="stats-title">Your Voting Statistics</div>
+            <table class="stats-table">
+                <tr>
+                    <td class="stats-vote-amber">Amber</td>
+                    <td>{{ user_vote_counts.amber|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-vote-green">Green</td>
+                    <td>{{ user_vote_counts.green|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-vote-red">Red</td>
+                    <td>{{ user_vote_counts.red|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-vote-total">Total Votes</td>
+                    <td class="stats-vote-total">{{ user_total_votes|add:"0" }}</td>
+                </tr>
+            </table>
+            <div class="stats-bar-wrap">
+                <canvas id="userBarChart" width="320" height="140"></canvas>
+            </div>
+        </div>
+        <!-- User Trend Statistics card: shows user's trend counts and summary -->
+        <div class="stats-card">
+            <div class="stats-title">Your Trend Statistics</div>
+            <table class="stats-table">
+                <tr>
+                    <td class="stats-trend-improving">Improving</td>
+                    <td>{{ user_trend_counts.improving|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-trend-same">About the Same</td>
+                    <td>{{ user_trend_counts.steady|add:"0" }}</td>
+                </tr>
+                <tr>
+                    <td class="stats-trend-worse">Getting Worse</td>
+                    <td>{{ user_trend_counts.worsening|add:"0" }}</td>
+                </tr>
+            </table>
+            <div class="stats-overall-trend">
+                Overall Trend:
+                {% if final_user_trend == "improving" %}
+                    <span class="stats-overall-improving">Improving</span>
+                {% elif final_user_trend == "steady" %}
+                    <span class="stats-overall-same">About the Same</span>
+                {% elif final_user_trend == "worsening" %}
+                    <span class="stats-overall-worse">Getting Worse</span>
+                {% else %}
+                    <span class="stats-overall-same">About the Same</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Chart.js code renders bar charts for team/user voting statistics -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const voteLabels = ["Amber", "Green", "Red"];
+// ignore error just some conflict, not affecting
+const teamVoteData = [
+    {{ team_vote_counts.amber|add:"0" }},
+    {{ team_vote_counts.green|add:"0" }},
+    {{ team_vote_counts.red|add:"0" }}
+];
+const userVoteData = [
+    {{ user_vote_counts.amber|add:"0" }},
+    {{ user_vote_counts.green|add:"0" }},
+    {{ user_vote_counts.red|add:"0" }}
+];
+// ignore error
+const voteColors = ["#ffb300", "#43a047", "#e53935"];
+
+const teamCtx = document.getElementById('teamBarChart').getContext('2d');
+new Chart(teamCtx, {
+    type: 'bar',
+    data: {
+        labels: voteLabels,
+        datasets: [{
+            label: 'Team Votes',
+            data: teamVoteData,
+            backgroundColor: voteColors,
+            borderRadius: 7
+        // }]                                            code to render team/user vote bar charts
+    },
+    options: {                                          
+        plugins: {legend: {display: false}},
+        scales: {
+            x: {grid: {display: false}},
+            y: {beginAtZero: true, ticks: {precision:0}}
+        }
+    }
+});
+const userCtx = document.getElementById('userBarChart').getContext('2d');
+new Chart(userCtx, {
+    type: 'bar',
+    data: {
+        labels: voteLabels,
+        datasets: [{
+            label: 'Your Votes',
+            data: userVoteData,
+            backgroundColor: voteColors,
+            borderRadius: 7
+        }]
+    },
+    options: {
+        plugins: {legend: {display: false}},
+        scales: {
+            x: {grid: {display: false}},
+            y: {beginAtZero: true, ticks: {precision:0}}
+        }
+    }
+});
+</script>
+{% endblock %}
+
+// <!-- Ridhwan code here -->
+

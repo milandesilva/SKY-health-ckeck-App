@@ -1,0 +1,222 @@
+<!-- Milan code here -->
+
+<!-- This template extends the base layout and provides a Contact Us form and contact details.
+    It uses custom styling and a modern layout for a professional, organized look. -->
+
+{% extends 'accounts/base.html' %}
+{% block title %}Contact Us | Health Check{% endblock %}
+
+<!-- Custom styles for the Contact Us page -->
+{% block extra_style %}
+<style>
+    /* Main container for the contact page content */
+.contact-main-container {
+    max-width: 500px;
+    margin: 60px auto 120px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+/* Card for page title and welcome text */
+.contact-title-card {
+    width: 100%;
+    background: linear-gradient(90deg, #e3f2fd 70%, #dbeafe 100%);
+    border-radius: 22px;
+    box-shadow: 0 3px 18px #2774ba0d;
+    padding: 28px 32px 18px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 7px;
+}
+.contact-title {
+    font-size: 2.15em;
+    color: #1976d2;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 7px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+.contact-title span {
+    font-size: 1.13em;
+}
+.contact-welcome {
+    font-size: 1.15em;
+    color: #185584;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+/* Card for the form section */
+.contact-card {
+    width: 100%;
+    background: #f7fbff;
+    border-radius: 18px;
+    box-shadow: 0 4px 32px #28508612;
+    padding: 32px 28px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+.contact-form-section {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+.contact-form label {
+    font-weight: 600;
+    color: #1465a2;
+    margin-bottom: 5px;
+    display: block;
+}
+.contact-form input[type="email"], .contact-form textarea {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 10px;
+    border: 1.6px solid #b4cdea;
+    font-size: 1.09em;
+    background: #f5f9fd;
+    margin-bottom: 13px;
+    box-sizing: border-box;
+    transition: border 0.15s;
+}
+.contact-form input[type="email"]:focus, .contact-form textarea:focus {
+    border-color: #1a76d2;
+    outline: none;
+}
+.contact-form textarea {
+    min-height: 90px;
+    max-height: 170px;
+    resize: none;
+}
+.contact-form button[type="submit"] {
+    background: linear-gradient(90deg, #1a76d2 70%, #2186eb 100%);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.13em;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 0;
+    box-shadow: 0 2px 12px #c7e2fa40;
+    cursor: pointer;
+    width: 100%;
+    letter-spacing: 0.18px;
+    transition: background 0.13s;
+    margin-top: 6px;
+}
+.contact-form button[type="submit"]:hover { background: #289ff3; }
+.success-message, .error-message {
+    text-align: center;
+    font-size: 1.07em;
+    margin-bottom: 6px;
+    width: 100%;
+}
+.success-message { color: #28a745; }
+.error-message { color: #e14242; }
+
+.contact-details-card {
+    width: 100%;
+    background: #eaf4fc;
+    border-radius: 16px;
+    padding: 21px 24px 13px 24px;
+    box-shadow: 0 2px 9px #b8eafd1a;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: flex-start;
+    margin-top: 7px;
+}
+.contact-info-row {
+    font-size: 1.09em;
+    color: #145fa3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+.contact-info-label {
+    font-weight: 600;
+    min-width: 120px;
+    color: #1976d2;
+}
+.contact-info-icon {
+    font-size: 1.28em;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 550px) {
+    .contact-main-container { max-width: 97vw; }
+    .contact-title-card, .contact-card, .contact-details-card { padding: 12px 2vw; }
+    .contact-form-section { max-width: 98vw; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contact-main-container">
+    <!-- Page Title and Welcome Message -->
+    <div class="contact-title-card">
+        <div class="contact-title">
+            <span aria-label="envelope" title="Contact Us">📨</span> Contact Us
+        </div>
+        <div class="contact-welcome">
+            We'd love to hear from you!<br>
+            Whether you have questions, feedback, or need support, our team is here to help you get the most from Health Check.
+        </div>
+    </div>
+    <!-- Contact Form Section -->
+    <div class="contact-card">
+        <div class="contact-form-section">
+            <form method="post" class="contact-form" autocomplete="off">
+                {% csrf_token %}
+                <!-- Show any success or error messages after form submission -->
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == "success" %}
+                            <div class="success-message">{{ message }}</div>
+                        {% elif message.tags == "error" %}
+                            <div class="error-message">{{ message }}</div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <label for="email">Your Email Address</label>
+                <input type="email" id="email" name="email" placeholder="e.g. john.doe@email.com" required>
+                <label for="message">How can we help you?</label>
+                <textarea id="message" name="message" placeholder="Type your message here..." required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+    <!-- Company Contact Details Card -->
+    <div class="contact-details-card">
+        <div class="contact-info-row">
+            <span class="contact-info-icon" aria-label="email" title="Email">✉️</span>
+            <span class="contact-info-label">Support Email:</span>
+            <span>support@healthcheck.com</span>
+        </div>
+        <div class="contact-info-row">
+            <span class="contact-info-icon" aria-label="telephone" title="Phone">☎️</span>
+            <span class="contact-info-label">Phone:</span>
+            <span>+44 123 456 7890</span>
+        </div>
+        <div class="contact-info-row">
+            <span class="contact-info-icon" aria-label="clock" title="Working Hours">⏰</span>
+            <span class="contact-info-label">Working Hours:</span>
+            <span>Mon-Fri, 9:00am – 8:00pm</span>
+        </div>
+        <div class="contact-info-row">
+            <span class="contact-info-icon" aria-label="office" title="Headquarters">🏢</span>
+            <span class="contact-info-label">HQ:</span>
+            <span>Sky Engineering, London, UK</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Milan code here -->

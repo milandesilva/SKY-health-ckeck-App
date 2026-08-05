@@ -1,0 +1,146 @@
+<!-- Milan code here -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Page setup and styling for a modern, centered contact/help form -->
+<head>
+    <meta charset="UTF-8">
+    <title>Help - Health Check</title>
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e3f1fa 0%, #cbe3f7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .help-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .help-form {
+            background: #fff;
+            max-width: 430px;
+            width: 100%;
+            padding: 42px 40px 30px 40px;
+            border-radius: 18px;
+            box-shadow: 0 8px 40px rgba(38,60,89,0.13);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: center;
+        }
+        .help-form h2 {
+            color: #1a76d2;
+            font-size: 2.1em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2px;
+            letter-spacing: 0.2px;
+        }
+        .help-form input[type="email"], .help-form textarea {
+            width: 100%;
+            padding: 13px 16px;
+            border-radius: 10px;
+            border: 1.6px solid #b4cdea;
+            font-size: 1.08em;
+            background: #f5f9fd;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+            transition: border 0.15s;
+        }
+        .help-form input[type="email"]:focus, .help-form textarea:focus {
+            border-color: #1a76d2;
+            outline: none;
+        }
+        .help-form textarea {
+            min-height: 90px;
+            max-height: 170px;
+            resize: none; /* Prevent resizing! */
+        }
+        .help-form button[type="submit"] {
+            background: linear-gradient(90deg, #1a76d2 70%, #2186eb 100%);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.16em;
+            border: none;
+            border-radius: 10px;
+            margin-top: 7px;
+            padding: 13px 0;
+            box-shadow: 0 2px 12px #c7e2fa40;
+            cursor: pointer;
+            width: 100%;
+            letter-spacing: 0.2px;
+            transition: background 0.13s;
+        }
+        .help-form button[type="submit"]:hover { background: #289ff3; }
+        .success-message, .error-message {
+            text-align: center;
+            font-size: 1.08em;
+            margin-bottom: 7px;
+            width: 100%;
+        }
+        .success-message { color: #28a745; }
+        .error-message { color: #e14242; }
+        .contact-info {
+            margin-top: 20px;
+            text-align: center;
+            color: #223355;
+            font-size: 1.08em;
+            font-weight: 500;
+            width: 100%;
+        }
+        .contact-info strong {
+            display: inline-block;
+            min-width: 110px;
+            color: #1956a0;
+            font-weight: 700;
+        }
+        @media (max-width: 550px) {
+            .help-form { padding: 20px 4vw 12px 4vw; }
+            .help-form h2 { font-size: 1.38em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="help-wrapper">
+        <!-- Contact/help form allowing users to send messages to support -->
+        <form method="post" class="help-form">
+            <h2>Contact &amp; Help</h2>
+            {% csrf_token %}
+            <!-- Shows success/error messages after form submission -->
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == "success" %}
+                        <div class="success-message">{{ message }}</div>
+                    {% elif message.tags == "error" %}
+                        <div class="error-message">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <!-- User input fields for email and message -->
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Type your message here..." required></textarea>
+            <!-- Submit button -->
+            <button type="submit">Send Message</button>
+            <!-- Displays static support contact info -->
+            <div class="contact-info">
+                <div>
+                    <strong>Support Email:</strong> support@healthcheck.com
+                </div>
+                <div>
+                    <strong>Phone:</strong> +44 123 456 7890
+                </div>
+                <div>
+                    <strong>Working Hours:</strong> 9am to 8pm-Monday to Friday
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<!-- Milan code here -->

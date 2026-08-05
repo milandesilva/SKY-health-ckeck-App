@@ -1,0 +1,194 @@
+<!-- Bilal code here -->
+{% extends 'accounts/base.html' %}
+<!-- Set the page title and inject custom CSS for the profile layout and responsive design -->
+{% block title %}My Profile | Health Check{% endblock %}
+<!-- CSS for profile container, layout, avatar, details, and buttons -->
+{% block extra_style %} 
+body {
+    background: #f5f8fd;
+}
+.profile-outer {
+    max-width: 1050px;
+    margin: 68px auto 110px auto;
+    background: #fff;
+    border-radius: 36px;
+    box-shadow: 0 8px 56px #28508624;
+    padding: 0 44px 60px 44px;   /* Added side padding */
+    overflow: hidden;
+    position: relative;
+}
+.profile-title-bar {
+    width: 100%;
+    padding: 38px 0 18px 0;
+    text-align: center;
+    background: transparent;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #1565c0;
+    letter-spacing: 0.5px;
+}
+.profile-main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 68px;
+    padding: 0 56px;
+    margin-top: 20px;
+}
+.profile-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 210px;
+    max-width: 270px;
+    margin-right: 0;
+}
+.profile-avatar {
+    width: 140px;
+    height: 140px;
+    background: linear-gradient(135deg, #b6e0fe 60%, #90caf9 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    color: #1565c0;
+    font-weight: 700;
+    box-shadow: 0 2px 14px #b0c7e833;
+    user-select: none;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+.profile-details-block {
+    flex: 1 1 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-left: 0;
+    margin-top: 0;
+}
+.profile-row {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+.profile-label {
+    min-width: 160px;
+    color: #1976d2;
+    font-weight: 600;
+    font-size: 1.18em;
+    letter-spacing: 0.06em;
+}
+.profile-value {
+    color: #223145;
+    font-size: 1.17em;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    word-break: break-word;
+}
+.profile-btn-bar {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 62px;
+    padding: 0 22px 0 22px;  /* Add horizontal padding so buttons don't touch edges */
+}
+.profile-btn {
+    background: linear-gradient(90deg, #1976d2 80%, #4fc3f7 100%);
+    color: #fff;
+    border: none;
+    border-radius: 26px;
+    padding: 20px 0;
+    font-size: 1.22em;
+    font-weight: 600;
+    box-shadow: 0 2px 16px #b8eafd33;
+    transition: background 0.14s, box-shadow 0.16s;
+    min-width: 220px;
+    max-width: 250px;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 0.18px;
+    display: inline-block;
+    text-decoration: none !important;
+}
+.profile-btn:hover, .profile-btn:focus {
+    background: #42a5f5;
+    box-shadow: 0 6px 34px #b6e0fe60;
+    color: #fff;
+    text-decoration: none !important;
+}
+.profile-outer a, .profile-outer a:visited, .profile-outer a:hover, .profile-outer a:active {
+    text-decoration: none !important;
+}
+
+@media (max-width: 1350px) {
+    .profile-outer { max-width: 99vw; padding-left: 8vw; padding-right: 8vw;}
+    .profile-main { padding: 0 2vw; gap: 38px;}
+}
+@media (max-width: 900px) {
+    .profile-main { flex-direction: column; align-items: center; padding: 0 0vw; gap: 34px;}
+    .profile-btn-bar { margin-top: 32px; padding: 0 4vw;}
+    .profile-details-block { width: 100%; }
+}
+@media (max-width: 600px) {
+    .profile-outer { padding-bottom: 24px; padding-left: 2vw; padding-right: 2vw;}
+    .profile-main { padding: 0 0vw;}
+    .profile-details-block { gap: 13px; }
+    .profile-btn-bar { flex-direction: column; gap: 16px; margin-top: 18px; padding: 0;}
+}
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-outer">
+    <div class="profile-title-bar">
+        My Profile
+    </div>
+    <div class="profile-main">
+        <!-- Left: Avatar (user image or initials fallback) -->
+        <div class="profile-left">
+            <div class="profile-avatar">
+                {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                {% else %}
+                    {{ profile.full_name|default:user.username|slice:":1" }}{{ profile.full_name|default:user.username|slice:"1:2"|upper }}
+                {% endif %}
+            </div>
+        </div>
+        <!-- Right: Main user details -->
+        <div class="profile-details-block">
+            <div class="profile-row">
+                <span class="profile-label">Full Name:</span>
+                <span class="profile-value">{{ profile.full_name }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Username:</span>
+                <span class="profile-value">{{ user.username }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Email:</span>
+                <span class="profile-value">{{ user.email }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Department:</span>
+                <span class="profile-value">{{ department.name }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Team:</span>
+                <span class="profile-value">{{ team.name }}</span>
+            </div>
+        </div>
+    </div>
+    <!-- Bottom: Action buttons (edit profile, change password, and team summary if user has that role) -->
+    <div class="profile-btn-bar">
+        <a href="{% url 'edit_profile' %}" class="profile-btn">Edit Profile</a>
+        <a href="{% url 'change_password' %}" class="profile-btn">Change Password</a>
+        {% if profile.role == "Engineer" or profile.role == "Team Leader" %}
+            <a href="{% url 'team_summary' %}" class="profile-btn">Team Summary</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+<!-- Bilal code here -->

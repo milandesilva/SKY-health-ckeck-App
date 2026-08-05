@@ -1,20 +1,20 @@
-<!-- Bilal code here -->
+<!-- Ridhwan code here -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Page setup: Sets title, imports main stylesheet, and includes inline CSS for styling the login form -->
+    <!-- Page setup: Sets title, links to CSS, and includes inline styles for the registration form -->
     <meta charset="UTF-8">
-    <title>Login - Health Check</title>
+    <title>Sign Up - Health Check</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
         body { min-height: 100vh; background: linear-gradient(135deg,#e3f1fa 0%, #cbe3f7 100%); }
-        .login-wrapper {
+        .signup-wrapper {
             min-height: 100vh; display: flex; align-items: center; justify-content: center;
         }
-        .login-form {
+        .signup-form {
             background: #fff;
-            max-width: 410px;
+            max-width: 430px;
             width: 100%;
             margin: 0 auto;
             padding: 38px 36px 30px 36px;
@@ -25,10 +25,10 @@
             gap: 18px;
             align-items: center;
         }
-        .login-form img {
+        .signup-form img {
             width: 100px; margin-bottom: 16px;
         }
-        .login-form h2 {
+        .signup-form h2 {
             color: #1a76d2;
             margin-bottom: 6px;
             font-size: 2em;
@@ -36,7 +36,7 @@
             text-align: center;
             letter-spacing: 0.5px;
         }
-        .login-form input[type="text"], .login-form input[type="password"] {
+        .signup-form input[type="text"], .signup-form input[type="email"], .signup-form input[type="password"] {
             width: 100%;
             padding: 12px 10px;
             border-radius: 8px;
@@ -45,21 +45,24 @@
             background: #f5f9fd;
             margin-bottom: 8px;
         }
-        .login-form button[type="submit"] {
+        .signup-form button[type="submit"] {
             background: linear-gradient(90deg, #1a76d2 70%, #2186eb 100%);
             color: #fff; font-weight: bold; font-size: 1.15em;
             border: none; border-radius: 8px; margin-top: 8px; padding: 12px 0;
             box-shadow: 0 2px 14px #c7e2fa60; cursor: pointer; width: 100%;
             transition: background 0.13s;
         }
-        .login-form button[type="submit"]:hover { background: #289ff3; }
+        .signup-form button[type="submit"]:hover { background: #289ff3; }
         .error-message {
             color: #e14242; text-align: center; font-size: 1.06em; margin-bottom: 5px;
         }
-        .signup-link, .help-link {
+        .success-message {
+            color: #28a745; text-align: center; font-size: 1.06em; margin-bottom: 5px;
+        }
+        .login-link, .help-link {
             text-align: center; font-size: 1.03em; margin-top: 6px;
         }
-        .signup-link a, .help-link a { color: #1a76d2; font-weight: bold; text-decoration: underline; }
+        .login-link a, .help-link a { color: #1a76d2; font-weight: bold; text-decoration: underline; }
         .help-btn {
             position: absolute; top: 22px; right: 30px; background: #1a76d2; color: #fff;
             border: none; border-radius: 6px; font-size: 1.05em; padding: 8px 16px;
@@ -68,40 +71,47 @@
         }
         .help-btn:hover { background: #289ff3; }
         @media (max-width: 520px) {
-            .login-form { padding: 24px 6vw 18px 6vw; }
+            .signup-form { padding: 24px 6vw 18px 6vw; }
             .help-btn { right: 6vw; }
         }
     </style>
 </head>
 <body>
-    <div class="login-wrapper">
-        <!-- Login form section, centered on page -->
-        <form method="post" class="login-form">
+    <div class="signup-wrapper">
+        <!-- Registration form centered on the page -->
+        <form method="post" class="signup-form">
             <!-- App logo -->
             <img src="{% static 'images/skylogo.png' %}" alt="Logo">
-            <h2>Login</h2>
+            <h2>Create an Account</h2>
             {% csrf_token %}
-            <!-- Displays login error messages, if any -->
+            <!-- Shows error or success messages after form submission -->
             {% if messages %}
                 {% for message in messages %}
                     {% if message.tags == "error" %}
                         <div class="error-message">{{ message }}</div>
                     {% endif %}
+                    {% if message.tags == "success" %}
+                        <div class="success-message">{{ message }}</div>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
-            <!-- Username/email and password fields -->
-            <input type="text" name="identifier" placeholder="Username or Email" required>
+            <!-- Registration fields: name, email, username, password, repeat password -->
+            <input type="text" name="full_name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
-            <!-- Submit/login button -->
-            <button type="submit">Login</button>
-            <!-- Link to sign-up page for new users -->
-            <div class="signup-link">
-                Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>
+            <input type="password" name="repeat_password" placeholder="Repeat Password" required>
+            <!-- Submit/sign up button -->
+            <button type="submit">Sign Up</button>
+            <!-- Link for users who already have an account -->
+            <div class="login-link">
+                Already have an account? <a href="{% url 'login' %}">Login here</a>
             </div>
         </form>
-        <!-- Floating button that links to help/contact page -->
+        <!-- Floating button to access support page -->
         <a href="{% url 'help' %}" class="help-btn">Help</a>
     </div>
 </body>
 </html>
-<!-- Bilal code here -->
+
+<!-- Ridhwan code here -->

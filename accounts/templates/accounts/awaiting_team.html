@@ -1,0 +1,80 @@
+<!-- # Gabriel code below 🔵🔵🔵🔵🔵 -->
+
+<!-- This page is a redirect page for when a user that don't have a role yet, a team or not allowed to access a page -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Awaiting Team Assignment</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* PAGE BACKGROUND & FONTS */
+        body { background: #a7cae8; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; }
+         /*MAIN CONTAINER */ 
+        .await-container {
+            max-width: 500px; margin: 100px auto 0 auto; background: #e2f0fb;
+            border-radius: 20px; padding: 48px 40px 36px 40px;
+            box-shadow: 0 8px 32px rgba(38,60,89,0.09);
+            text-align: center;
+        }
+        /* ICON AT THE TOP */
+        .await-icon {
+            font-size: 60px;
+            margin-bottom: 16px;
+            color: #1465a2;
+        }
+        /* TITLE STYLING */
+        .await-title {
+            font-size: 2.1em;
+            color: #1465a2;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        /* MESSAGE UNDER TITLE */
+        .await-message {
+            font-size: 1.16em;
+            color: #345;
+            margin-bottom: 36px;
+        }
+        /* BUTTON STYLING */
+        .btn-main {
+            padding: 12px 34px; border: none; border-radius: 8px;
+            font-size: 1.14em; font-weight: 500;
+            background: #1465a2; color: #fff;
+            box-shadow: 0 1px 4px #0001; transition: background 0.19s, box-shadow 0.19s;
+            cursor: pointer; margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-main:hover {
+            background: #289ff3;
+            color: #fff;
+            box-shadow: 0 4px 20px #1465a265;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        MAIN CONTENT:
+        - Shows an icon, a title, a message why access is denied,
+          and a button to go back to the home page.
+    -->
+    <div class="await-container">
+        <div class="await-icon">⌛</div>
+        <div class="await-title">You are not authorised to access this content</div>
+        <div class="await-message">
+            It may be because you are not yet assigned to a role or a team, or your role cannot access it.<br>
+            <br>
+            <span style="color:#1465a2; font-size:1.08em; font-weight:500;">
+                Please contact your administrator or manager if this is unexpected.
+            </span>
+        </div>
+        <!-- Button to return to the home page -->
+        <a href="{% url 'home' %}" class="btn-main">Return to Home</a>
+    </div>
+</body>
+</html>
+
+<!-- # Gabriel code ends here 🔵🔵🔵🔵🔵 -->

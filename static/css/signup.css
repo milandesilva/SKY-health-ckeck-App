@@ -1,0 +1,120 @@
+/* signup.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    display: block;
+    margin: 2rem auto 1rem;
+    width: 160px;
+}
+
+.navbar {
+    background-color: #002D72;
+    padding: 1rem 2rem;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.nav-list li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.nav-list li a:hover {
+    background-color: #00142e;
+}
+
+.signup-container {
+    background-color: white;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    margin: 3rem auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.signup-container input {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.signup-container button {
+    margin-top: 1rem;
+    background-color: #002D72;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.signup-container button:hover {
+    background-color: #001c4a;
+}
+
+.footer {
+    background-color: #002D72;
+    color: white;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+.footer hr {
+    border: none;
+    height: 1px;
+    background-color: #ffffff44;
+    margin: 0 auto 1rem;
+    width: 80%;
+}
+
+/* Style for the role dropdown */
+.signup-container select {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #f3f3f3;  /* Same background color as inputs */
+    appearance: none; /* Remove default dropdown style */
+    -webkit-appearance: none; /* Safari */
+    -moz-appearance: none; /* Firefox */
+}
+
+/* Style for the dropdown when clicked */
+.signup-container select:focus {
+    outline: none;
+    border-color: #002D72; /* Change border color on focus */
+    background-color: #ffffff;  /* White background on focus */
+}
+
+/* Style the dropdown arrow */
+.signup-container select::-ms-expand {
+    display: none;  /* Remove the default arrow on IE */
+}
