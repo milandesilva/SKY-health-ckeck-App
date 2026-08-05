@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-y4mdb^a47d(*zj89lh9h3&*+im50pnfg0gg^53r0e=!4zgl2f7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 INSTALLED_APPS = [
@@ -19,9 +19,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # Add your custom apps here
-    'accounts',  # ✅ Add this after running `startapp accounts`
+    'smart_selects',
+    # Custom apps
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -36,11 +36,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'groupproject.urls'
 
-# Template settings for rendering HTML
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # ✅ Enables global templates folder if you want it
+        'DIRS': [BASE_DIR / 'templates'],  # Global templates folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -59,9 +58,10 @@ WSGI_APPLICATION = 'groupproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'softdevdatabase.db',
     }
 }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -88,18 +88,23 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Static files
 STATIC_URL = 'static/'
 
-# Static files root
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Authentication redirects (optional but helpful for user experience)
-LOGIN_REDIRECT_URL = '/'        # Where to go after login
-LOGOUT_REDIRECT_URL = '/accounts/login/'  # Where to go after logout
+# Login/logout redirects
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/accounts/home/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
+# Email (console backend prints to terminal in local dev)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'healthcheck@localhost'

@@ -1,0 +1,177 @@
+<!-- Milan code here -->
+<!-- This is the base file for html and css -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Set the title block for each page -->
+    <title>{% block title %}Health Check{% endblock %}</title>
+    <!-- Main shared stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* BASE PAGE LAYOUT & TYPOGRAPHY */
+        body {
+            background: #f4f6fa;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        /* NAVIGATION BAR STYLING */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #002e6d;
+            padding: 0 44px 0 32px;
+            min-height: 75px;
+            box-sizing: border-box;
+        }
+        .navbar-logo img {
+            display: block;
+            height: 46px;
+            width: auto;
+            margin-right: 38px;
+        }
+        .nav-list {
+            display: flex;
+            gap: 44px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-list li a {
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.13em;
+            padding: 26px 8px;
+            transition: color 0.15s;
+        }
+        .nav-list li a:hover {
+            color: #38b3ff;
+        }
+        /* USER PROFILE ICON STYLING */
+        .profile-icon {
+            display: flex;
+            align-items: center;
+            margin-left: 28px;
+            padding: 0 6px;
+            text-decoration: none;
+            transition: background 0.15s, border-radius 0.15s, box-shadow 0.18s;
+        }
+        .profile-icon-bg {
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 9px #002e6d22;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: box-shadow 0.15s, background 0.18s;
+            border: 3px solid #1465a2;
+        }
+        .profile-icon:hover .profile-icon-bg {
+            box-shadow: 0 6px 18px #1465a288;
+            background: #e6f2ff;
+            border-color: #38b3ff;
+        }
+        .profile-icon svg {
+            display: block;
+            margin-top: 0;
+            transition: stroke 0.15s;
+        }
+        .profile-icon:hover svg {
+            stroke: #289ff3;
+        }
+        /* FOOTER STYLING */
+        .footer {
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            background: #002e6d;
+            font-size: 1.06em;
+            letter-spacing: 0.1px;
+            font-weight: 500;
+            border-top: 2px solid #1c3862;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            height: 75px;
+            padding: 0 44px 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 820px) {
+            .navbar { flex-direction: column; align-items: stretch; padding: 0 4vw; }
+            .navbar-logo { justify-content: flex-start; margin-bottom: 6px; }
+            .nav-list { justify-content: center; gap: 22px; }
+            .profile-icon { margin: 0 auto; }
+            .footer {
+                font-size: 0.97em;
+                min-height: 58px;
+                padding: 0 4vw;
+                height: 58px;
+            }
+            .profile-icon-bg {
+                width: 38px;
+                height: 38px;
+            }
+        }
+        /* --- Page Content Wrapper --- */
+        .page-content {
+            min-height: calc(100vh - 75px); /* always leaves space for footer */
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+        }
+        /* ignore error */
+        {% block extra_style %}{% endblock %}
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- NAVBAR: Appears at the top of every page -->
+<nav class="navbar">
+    <a href="{% url 'home' %}" class="navbar-logo" style="display: flex; align-items: center;">
+        <img src="{% static 'images/skylogo.png' %}" alt="Logo">
+    </a>
+    <!-- Navigation links -->
+    <ul class="nav-list">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'healthcheck_landing' %}">Health Check</a></li>
+        <li><a href="{% url 'summary' %}">Summary</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+        <li><a href="/accounts/logout/">Logout</a></li>
+    </ul>
+    <!-- User profile button/icon -->
+    <a href="{% url 'yourprofile' %}" class="profile-icon" title="Your Profile">
+        <span class="profile-icon-bg">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#083b6d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M16 20a4 4 0 0 0-8 0"/>
+            </svg>
+        </span>
+    </a>
+</nav>
+
+<!-- MAIN PAGE CONTENT (will be filled by individual templates) -->
+<div class="page-content">
+{% block content %}
+<!-- Page content will go here! -->
+{% endblock %}
+</div>
+
+<!-- FOOTER: Fixed to the bottom, always visible -->
+<footer class="footer">
+    © 2025 Health Check - Sky Engineering | University of Westminster
+</footer>
+</body>
+</html>
+<!-- Milan code here -->
