@@ -28,45 +28,52 @@ import sys
 # Ridhwan code here
 # Sign UP
 def signup_view(request):
-    # If the form is submitted via POST
     if request.method == 'POST':
-        # Get user input from the form
-        full_name = request.POST['full_name']
-        email = request.POST['email']
-        username = request.POST['username']
-        password = request.POST['password']
-        repeat_password = request.POST['repeat_password']
-        # Check if passwords match
+        full_name = request.POST.get('full_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
+        repeat_password = request.POST.get('repeat_password', '')
+
+        if not all([full_name, email, username, password, repeat_password]):
+            messages.error(request, "Please fill in all fields.")
+            return render(request, 'accounts/signup.html')
+
         if password != repeat_password:
             messages.error(request, "Passwords do not match.")
             return render(request, 'accounts/signup.html')
-        # Check for existing username and email
-        if User.objects.filter(username=username).exists():
+
+        if len(password) < 8:
+            messages.error(request, "Password must be at least 8 characters.")
+            return render(request, 'accounts/signup.html')
+
+        if User.objects.filter(username__iexact=username).exists():
             messages.error(request, "Username already exists.")
             return render(request, 'accounts/signup.html')
-        if User.objects.filter(email=email).exists():
+
+        if User.objects.filter(email__iexact=email).exists():
             messages.error(request, "Email already exists.")
             return render(request, 'accounts/signup.html')
 
         try:
-            # Create the user
             user = User.objects.create_user(
                 username=username,
                 email=email,
-                password=password
+                password=password,
             )
-            # After user is created, set Profile fields (auto-created by signal)
-            user.profile.full_name = full_name
-            user.profile.role = 'Unassigned'  
-            user.profile.save()
-            # Show success message and redirect to login
+            profile, _ = Profile.objects.get_or_create(user=user)
+            profile.full_name = full_name
+            profile.role = 'Unassigned'
+            profile.save()
             messages.success(request, 'Account created successfully! You can now log in.')
             return redirect('login')
         except IntegrityError:
-            # Handle rare race condition or database error
             messages.error(request, "A user with these details already exists.")
             return render(request, 'accounts/signup.html')
-    # On GET (or if error), show the signup page
+        except Exception:
+            messages.error(request, "Could not create your account. Please try again.")
+            return render(request, 'accounts/signup.html')
+
     return render(request, 'accounts/signup.html')
 # Ridhwan code here
 
